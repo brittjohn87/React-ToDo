@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { addTodo } from '../ducks/todos/actions';
 import 'bootstrap/dist/css/bootstrap.css';
 
 class ListEntry extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state ={
+    this.state = {
       value: ''
     };
     this.handleChange = this.handleChange.bind(this);
@@ -12,21 +14,22 @@ class ListEntry extends Component {
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({ value: event.target.value });
   }
 
   handleSubmit(event) {
-    alert(this.state.value + ' was added!');
+    const { addTodo } = this.props;
+    addTodo(this.state.value);
   }
 
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit} className="form-inline d-flex justify-content-center mt-4">
-        <label className="p-3">Enter Task:</label>
+        <form className="form-inline d-flex justify-content-center mt-4">
+          <label className="p-3">Enter Task:</label>
           <div className="d-flex form-group">
             <input value={this.state.value} onChange={this.handleChange} className="form-control" type="text" placeholder="Enter Task Here" />
-            <button className="btn btn-success" type="submit" value="submit">Submit</button>
+            <button className="btn btn-success" type="button" onClick={this.handleSubmit}>Submit</button>
           </div>
         </form>
       </div>
@@ -34,4 +37,8 @@ class ListEntry extends Component {
   }
 }
 
-export default ListEntry;
+const mapDispatchToProps = {
+  addTodo
+}
+
+export default connect(null, mapDispatchToProps)(ListEntry);
